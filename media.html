@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link type="text/css" rel="stylesheet" href="css/cssreset.css" />
+<link type="text/css" rel="stylesheet" href="css/style.css" />
+</head>
+
+<style type="text/css">
+	video {
+	  width: 307px;
+	  height: 250px;
+	  background: rgba(255,255,255,0.5);
+	  border: 1px solid #ccc;
+	}
+	.grayscale {
+	  -webkit-filter: grayscale(1);
+	}
+	.sepia {
+	  -webkit-filter: sepia(1);
+	}
+	.blur {
+	  -webkit-filter: blur(3px);
+	}	
+</style>
+
+<body>
+
+<div style="text-align:center;">
+<video id="screenshot-stream" class="videostream" autoplay=""></video>
+<img id="screenshot" src="">
+<canvas id="screenshot-canvas" style="display:none;"></canvas>
+<p><button id="screenshot-button">Capture</button> <button id="screenshot-stop-button">Stop</button></p>
+</div>	
+
+
+<div style="text-align:center;">
+<video id="cssfilters-stream" class="videostream" autoplay="" title="Click me to apply CSS Filters" alt="Click me to apply CSS Filters"></video>
+<p>Click the video to cycle through CSS filters</p>
+<p><button id="capture-button2">Capture video</button> <button id="stop-button2">Stop</button></p>
+</div>
+
+</body>
+<script type="text/javascript" src="js/jquery-1.7.min.js"></script>
+<script type="text/javascript">
+(function() {
+	 var onFailSoHard = function(e) {
+    console.log('Reeeejected!', e);
+  };
+    var video = document.querySelector('#screenshot-stream');
+    var button = document.querySelector('#screenshot-button');
+    var canvas = document.querySelector('#screenshot-canvas');
+    var img = document.querySelector('#screenshot');
+    var ctx = canvas.getContext('2d');
+    var localMediaStream = null;
+    function sizeCanvas() {
+        setTimeout(function() {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            img.height = video.videoHeight;
+            img.width = video.videoWidth;
+        }, 100);
+    }
+    function snapshot() {
+        ctx.drawImage(video, 0, 0);
+        img.src = canvas.toDataURL('image/webp');
+    }
+    button.addEventListener('click', function(e) {
+        if (localMediaStream) {
+            snapshot();
+            return;
+        }
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia('video', function(stream) {
+                video.src = stream;
+                localMediaStream = stream;
+                sizeCanvas();
+                button.textContent = 'Take Shot';
+            }, onFailSoHard);
+        } else if (navigator.webkitGetUserMedia) {
+            navigator.webkitGetUserMedia({video: true}, function(stream) {
+                video.src = window.webkitURL.createObjectURL(stream);
+                localMediaStream = stream;
+                sizeCanvas();
+                button.textContent = 'Take Shot';
+            }, onFailSoHard);
+        } else {
+            onFailSoHard({target: video});
+        }
+    }, false);
+    video.addEventListener('click', snapshot, false);
+    document.querySelector('#screenshot-stop-button').addEventListener('click', function(e) {
+        video.pause();
+        localMediaStream.stop();
+    }, false);
+})();
+
+(function() {
+     var onFailSoHard = function(e) {
+    console.log('Reeeejected!', e);
+  };
+    var video = document.querySelector('#cssfilters-stream');
+    var button = document.querySelector('#capture-button2');
+    var localMediaStream = null;
+    var idx = 0;
+    var filters = ['grayscale', 'sepia', 'blur', 'brightness', 'contrast', 'hue-rotate', 'hue-rotate2', 'hue-rotate3', 'saturate', 'invert', ''];
+    function changeFilter(e) {
+        var el = e.target;
+        el.className = '';
+        var effect = filters[idx++ % filters.length];
+        if (effect) {
+            el.classList.add(effect);
+        }
+    }
+    button.addEventListener('click', function(e) {
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia('video, audio', function(stream) {
+                video.src = stream;
+                localMediaStream = stream;
+            }, onFailSoHard);
+        } else if (navigator.webkitGetUserMedia) {
+            navigator.webkitGetUserMedia({video: true}, function(stream) {
+                video.src = window.webkitURL.createObjectURL(stream);
+                localMediaStream = stream;
+            }, onFailSoHard);
+        } else {
+            onFailSoHard({target: video});
+        }
+    }, false);
+    document.querySelector('#stop-button2').addEventListener('click', function(e) {
+        video.pause();
+        localMediaStream.stop();
+    }, false);
+    video.addEventListener('click', changeFilter, false);
+})();
+</script>
+</html>
