@@ -11,6 +11,9 @@
 /*	img { 
 		-webkit-filter: grayscale(0%) blur(1px) invert(10%) opacity(50%) saturate(3%) sepia(100%) ;
 	}*/
+	.hide {
+		visibility: hidden;
+	}
 	#container {
 		position: relative;
 	}
@@ -19,12 +22,15 @@
 		height: 540px;
 		border: 1px solid #000;
 	}
-	#stuff-box, #border-box {
+	#stuff-box,#border-box {
 		width: 720px;
 		height: 540px;
 		border: 1px solid #000;
 		position: absolute;
-		top: 0px
+		top: 0px;
+	}
+	#stuff-box img {
+		position: absolute;
 	}
 	.tool-bar {
 		width: 720px;
@@ -46,6 +52,9 @@
 		height: 100px;
 		background: #00E1FF;
 	}
+	.edit-tool p {
+		margin-bottom: 5px;
+	}
 	.edit-tool ul {
 		width: 230px;
 		height: 100px;
@@ -55,6 +64,16 @@
 		float: left;
 		margin-right: 10px;
 		margin-bottom: 5px;
+	}
+	#stuff li {
+		width: 60px;
+		height: 30px;
+		background: #fff;
+		line-height: 30px;
+		cursor: pointer;
+		text-align: center;
+		border-radius: 3px;
+		box-shadow: 1px 1px 1px 1px #C5C5C5;
 	}
 	.edit-tool ul li input[type=button] {
 		cursor: pointer;
@@ -84,7 +103,7 @@
 
 		<div class="pict-box">
 
-			<canvas id="edit-box"></canvas>
+			<canvas id="edit-box" class="hide"></canvas>
 
 
 			<ul class="tool-bar">
@@ -93,6 +112,7 @@
 				<li id="btn-export">导出</li>
 			</ul>
 		</div>
+
 		<div class="edit-tool">
 			<ul id="filter" class="filter">
 				<p>滤镜</p>
@@ -105,12 +125,12 @@
 			</ul>
 			<ul id="stuff">
 				<p>饰品</p>
-				<li><input type="button" value="眼泪"/></li>
-				<li><input type="button" value="太阳"/></li>
-				<li><input type="button" value="胡子"/></li>
-				<li><input type="button" value="爱心"/></li>
-				<li><input type="button" value="蝴蝶结"/></li>
-				<li><input type="button" value="皇冠"/></li>
+				<li>眼泪<input class="hide" value="1"/></li>
+				<li>太阳<input class="hide" value="2"/></li>
+				<li>胡子<input class="hide" value="3"/></li>
+				<li>爱心<input class="hide" value="4"/></li>
+				<li>蝴蝶结<input class="hide" value="5"/></li>
+				<li>皇冠<input class="" value="6"/></li>
 			</ul>
 			<ul id="border">
 				<p>边框</p>
@@ -123,9 +143,9 @@
 			</ul>
 		</div>
 
-		<img id="border-box" src="">
+		<img id="border-box" class="hide" src="">
 
-		<div class="stuff-box"></div>
+		<div id="stuff-box"></div>
 
 	</div>
 </body>
@@ -183,7 +203,8 @@ function filterChg(event) {
 }*/
 
 function addBorder(event) {
-	var borderObj = document.getElementById("border-box");
+	var borderBoxObj = document.getElementById("border-box");
+	console.log(event.toElement);
 	var img_name = event.toElement.value;
 	if(img_name == "边框0") {
   	borderObj.src = "img/border_0.png";
@@ -191,10 +212,22 @@ function addBorder(event) {
 	}
 	var img_url = "img/border_" + img_name.substring(2) + ".png";
 	console.log(img_url);
-  borderObj.src = img_url;
+  borderBoxObj.src = img_url;
 }
 
-
+function addStuff(event) {
+	var stuffBoxObj = document.getElementById("stuff-box");
+	var new_stuff = document.createElement("img");
+	var stuff_name = event.toElement.children[0].value;
+	//有些不支持children,或者用: event.toElement.childNodes[1].value);
+	var img_url = "img/stuff_" + stuff_name + ".png";
+	var z_index = 1;
+	
+	new_stuff.src = img_url;
+	new_stuff.style.zIndex = z_index++;
+	console.log(new_stuff);
+	stuffBoxObj.appendChild(new_stuff);
+}
 
 window.onload = function() {
 	/* create canvas and context objects*/
@@ -223,7 +256,7 @@ window.onload = function() {
 	}*/
 
 	for(var i = 1; i < filter.children.length; i++) {
-		console.log(filter.children[i]);
+		// console.log(filter.children[i]);
 		filter.children[i].addEventListener("click", function (event) {
 			filterChg(event);
   	}, false);
@@ -233,16 +266,16 @@ window.onload = function() {
 	var border = document.getElementById("border");
 
 	for(var i = 1; i < border.children.length; i++) {
-		console.log(border.children[i]);
+		// console.log(border.children[i]);
 		border.children[i].addEventListener("click", function (event) {
 			addBorder(event);
   	}, false);
 	}
 
 	var stuff = document.getElementById("stuff");
-
+	// console.log(stuff.children[1].children);
 	for(var i = 1; i < stuff.children.length; i++) {
-		console.log(stuff.children[i]);
+		// console.log(stuff.children[i]);
 		stuff.children[i].addEventListener("click", function (event) {
 			addStuff(event);
   	}, false);
@@ -251,7 +284,6 @@ window.onload = function() {
   // $("#btn-edit").mouseenter(function(){
   // 	$(".edit-tool").fun
   // });
-
 }
 
 
