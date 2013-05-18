@@ -11,10 +11,20 @@
 /*	img { 
 		-webkit-filter: grayscale(0%) blur(1px) invert(10%) opacity(50%) saturate(3%) sepia(100%) ;
 	}*/
+	#container {
+		position: relative;
+	}
 	#edit-box {
 		width: 720px;
 		height: 540px;
 		border: 1px solid #000;
+	}
+	#border-box {
+		width: 720px;
+		height: 540px;
+		border: 1px solid #000;
+		position: absolute;
+		top: 0px
 	}
 	.tool-bar {
 		width: 720px;
@@ -46,6 +56,9 @@
 		margin-right: 10px;
 		margin-bottom: 5px;
 	}
+	.edit-tool ul li input[type=button] {
+		cursor: pointer;
+	}
 	.grayscale {
 	  -webkit-filter: grayscale(1);
 	}
@@ -67,41 +80,51 @@
 </style>
 
 <body>
-	<!-- <img id="pic" src="img/aaaa.jpg"> -->
-	<div class="pict-box"> 
-		<canvas id="edit-box"></canvas>
-		<ul class="tool-bar">
-			<li id="btn-edit">编辑工具</li>
-			<li id="btn-reset">恢复原图</li>
-			<li id="btn-export">导出</li>
-		</ul>
-	</div>
-	<div class="edit-tool">
-		<ul id="filter" class="filter">
-			<p>滤镜</p>
-			<li><input type="button" value="变暗"/></li>
-			<li><input type="button" value="加亮"/></li>
-			<li><input type="button" value="模糊"/></li>
-			<li><input type="button" value="反色"/></li>
-			<li><input type="button" value="淡化"/></li>
-			<li><input id="aa" type="button" value="复古"/></li>
-		</ul>
-		<ul>
-			<p>饰品</p>
-			<li><input type="button" value="帽子"/></li>
-			<li><input type="button" value="胡子"/></li>
-			<li><input type="button" value="爱心"/></li>
-			<li><input type="button" value="蝴蝶结"/></li>
-			<li><input type="button" value="皇冠"/></li>
-		</ul>
-		<ul>
-			<p>边框</p>
-			<li><input type="button" value="边框1"/></li>
-			<li><input type="button" value="边框2"/></li>
-			<li><input type="button" value="边框3"/></li>
-			<li><input type="button" value="边框4"/></li>
-			<li><input type="button" value="边框5"/></li>
-		</ul>
+	<div id="container">
+
+		<div class="pict-box">
+
+			<canvas id="edit-box"></canvas>
+
+
+			<ul class="tool-bar">
+				<li id="btn-edit">编辑工具</li>
+				<li id="btn-reset">恢复原图</li>
+				<li id="btn-export">导出</li>
+			</ul>
+		</div>
+		<div class="edit-tool">
+			<ul id="filter" class="filter">
+				<p>滤镜</p>
+				<li><input type="button" value="变暗"/></li>
+				<li><input type="button" value="加亮"/></li>
+				<li><input type="button" value="模糊"/></li>
+				<li><input type="button" value="反色"/></li>
+				<li><input type="button" value="淡化"/></li>
+				<li><input type="button" value="复古"/></li>
+			</ul>
+			<ul>
+				<p>饰品</p>
+				<li><input type="button" value="眼泪"/></li>
+				<li><input type="button" value="太阳"/></li>
+				<li><input type="button" value="胡子"/></li>
+				<li><input type="button" value="爱心"/></li>
+				<li><input type="button" value="蝴蝶结"/></li>
+				<li><input type="button" value="皇冠"/></li>
+			</ul>
+			<ul id="border">
+				<p>边框</p>
+				<li><input type="button" value="边框1"/></li>
+				<li><input type="button" value="边框2"/></li>
+				<li><input type="button" value="边框3"/></li>
+				<li><input type="button" value="边框4"/></li>
+				<li><input type="button" value="边框5"/></li>
+				<li><input type="button" value="边框0"/></li>
+			</ul>
+		</div>
+
+		<img id="border-box" src="">
+
 	</div>
 </body>
 <!-- <script type="text/javascript" src="js/jquery-1.7.min.js"></script> -->
@@ -112,7 +135,7 @@
 // ctx.drawImage(img,10,10);
 
 function filterChg(event) {
-    console.log(event);
+    // console.log(event);
     // var filter_name = "/f-(\w+)/";
     // var a = this.classList.contains("filter");
     // var a = this.className.split(/\f+/);
@@ -121,7 +144,8 @@ function filterChg(event) {
 		console.log(event.toElement.value);
 		// canvas.className += event.toElement.value + "";
 
-		switch(event.toElement.value) {
+		var filter_name = event.toElement.value;
+		switch(filter_name) {
 			case "变暗":
 				canvas.classList.toggle("grayscale");
 				// canvas.className += "grayscale";
@@ -142,6 +166,33 @@ function filterChg(event) {
 				canvas.classList.toggle("sepia");
 				break;
 		}
+}
+
+/*function addBorder(event) {
+	var borderObj = new Image();
+	borderObj.onload = function() {
+		ctx.drawImage(this, 0, 0, this.width, this.height, 0, 0, canvas.width, canvas.height);
+	}
+
+	var img_name = event.toElement.value;
+	var img_url = "img/border_" + img_name.substring(2) + ".png";
+	console.log(img_url);
+  borderObj.src = img_url;
+}*/
+
+function addBorder(event) {
+	var borderObj = document.getElementById("border-box");
+
+	var img_name = event.toElement.value;
+console.log(img_name);
+	if(img_name == "边框0") {
+  	borderObj.src = "img/border_0.png";
+  	console.log("message");
+  	return false;
+	}
+	var img_url = "img/border_" + img_name.substring(2) + ".png";
+	console.log(img_url);
+  borderObj.src = img_url;
 }
 
 window.onload = function() {
@@ -177,12 +228,20 @@ window.onload = function() {
   	}, false);
 	}
 
+
+	var border = document.getElementById("border");
+
+	for(var i = 1; i < border.children.length; i++) {
+		console.log(border.children[i]);
+		border.children[i].addEventListener("click", function (event) {
+			addBorder(event);
+  	}, false);
+	}
+
   // $("#btn-edit").mouseenter(function(){
-  // 	$(".filter").fun
+  // 	$(".edit-tool").fun
   // });
-	
-	var btn_sepia = document.getElementById("aa");
-	btn_sepia.className += "sepia";
+
 }
 
 
