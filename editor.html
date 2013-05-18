@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link type="text/css" rel="stylesheet" href="css/cssreset.css" />
+<link type="text/css" rel="stylesheet" href="css/style.css" />
+</head>
+
+<style type="text/css">
+/*	img { 
+		-webkit-filter: grayscale(0%) blur(1px) invert(10%) opacity(50%) saturate(3%) sepia(100%) ;
+	}*/
+	#edit-box {
+		width: 720px;
+		height: 540px;
+		border: 1px solid #000;
+	}
+	.tool-bar {
+		width: 720px;
+		height: 40px;
+		border: 1px solid #000;
+	}
+	.tool-bar li {
+		width: 100px;
+		height: 30px;
+		float: left;
+		margin-right: 20px;
+		background: #828D92;
+		text-align: center;
+		line-height: 30px;
+		cursor: pointer;
+	}
+	.edit-tool {
+		width: 720px;
+		height: 100px;
+		background: #00E1FF;
+	}
+	.edit-tool ul {
+		width: 230px;
+		height: 100px;
+		float: left;
+	}
+	.edit-tool ul li {
+		float: left;
+		margin-right: 10px;
+		margin-bottom: 5px;
+	}
+	.grayscale {
+	  -webkit-filter: grayscale(1);
+	}
+	.brightness {
+	  -webkit-filter: brightness(140%);
+	}
+	.blur {
+	  -webkit-filter: blur(3px);
+	}
+	.invert {
+	  -webkit-filter: invert(100%)
+	}
+	.opacity {
+	  -webkit-filter: opacity(50%)
+	}
+	.sepia {
+	  -webkit-filter: sepia(1);
+	}
+</style>
+
+<body>
+	<!-- <img id="pic" src="img/aaaa.jpg"> -->
+	<div class="pict-box"> 
+		<canvas id="edit-box"></canvas>
+		<ul class="tool-bar">
+			<li id="btn-edit">编辑工具</li>
+			<li id="btn-reset">恢复原图</li>
+			<li id="btn-export">导出</li>
+		</ul>
+	</div>
+	<div class="edit-tool">
+		<ul id="filter" class="filter">
+			<p>滤镜</p>
+			<li><input type="button" value="变暗"/></li>
+			<li><input type="button" value="加亮"/></li>
+			<li><input type="button" value="模糊"/></li>
+			<li><input type="button" value="反色"/></li>
+			<li><input type="button" value="淡化"/></li>
+			<li><input id="aa" type="button" value="复古"/></li>
+		</ul>
+		<ul>
+			<p>饰品</p>
+			<li><input type="button" value="帽子"/></li>
+			<li><input type="button" value="胡子"/></li>
+			<li><input type="button" value="爱心"/></li>
+			<li><input type="button" value="蝴蝶结"/></li>
+			<li><input type="button" value="皇冠"/></li>
+		</ul>
+		<ul>
+			<p>边框</p>
+			<li><input type="button" value="边框1"/></li>
+			<li><input type="button" value="边框2"/></li>
+			<li><input type="button" value="边框3"/></li>
+			<li><input type="button" value="边框4"/></li>
+			<li><input type="button" value="边框5"/></li>
+		</ul>
+	</div>
+</body>
+<!-- <script type="text/javascript" src="js/jquery-1.7.min.js"></script> -->
+<script type="text/javascript">
+// var c=document.getElementById("edit-box");
+// var ctx=c.getContext("2d");
+// var img=document.getElementById("pic");
+// ctx.drawImage(img,10,10);
+
+function filterChg(event) {
+    console.log(event);
+    // var filter_name = "/f-(\w+)/";
+    // var a = this.classList.contains("filter");
+    // var a = this.className.split(/\f+/);
+    // console.log();
+    var canvas = document.getElementById("edit-box");
+		console.log(event.toElement.value);
+		// canvas.className += event.toElement.value + "";
+
+		switch(event.toElement.value) {
+			case "变暗":
+				canvas.classList.toggle("grayscale");
+				// canvas.className += "grayscale";
+				break;
+			case "加亮":
+				canvas.classList.toggle("brightness");
+				break;
+			case "模糊":
+				canvas.classList.toggle("blur");
+				break;
+			case "反色":
+				canvas.classList.toggle("invert");
+				break;
+			case "淡化":
+				canvas.classList.toggle("opacity");
+				break;
+			case "复古":
+				canvas.classList.toggle("sepia");
+				break;
+		}
+}
+
+window.onload = function() {
+	/* create canvas and context objects*/
+	canvas = document.getElementById("edit-box");
+	ctx = canvas.getContext("2d");
+
+	/* load source image*/
+
+	imgObj = new Image();
+
+	imgObj.onload = function() {
+		ctx.drawImage(this, 0, 0, this.width, this.height, 0, 0, canvas.width, canvas.height);
+	}
+
+  imgObj.src = "img/aaaa.jpg";
+
+	// var filter = document.getElementsByClassName("filter");
+	var filter = document.getElementById("filter");
+	// console.log(filter.children[2].children);
+
+
+// console.log(filter.children.length);
+/*	for(var i = 1; i < filter.children.length; i++) {
+		console.log(filter.children[i]);
+		filter.children[i].addEventListener("click", filterChg(), false);
+	}*/
+
+	for(var i = 1; i < filter.children.length; i++) {
+		console.log(filter.children[i]);
+		filter.children[i].addEventListener("click", function (event) {
+			filterChg(event);
+  	}, false);
+	}
+
+  // $("#btn-edit").mouseenter(function(){
+  // 	$(".filter").fun
+  // });
+	
+	var btn_sepia = document.getElementById("aa");
+	btn_sepia.className += "sepia";
+}
+
+
+</script>
+</html>
