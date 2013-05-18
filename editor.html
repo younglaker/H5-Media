@@ -96,6 +96,7 @@
 	.sepia {
 	  -webkit-filter: sepia(1);
 	}
+
 </style>
 
 <body>
@@ -103,7 +104,7 @@
 
 		<div class="pict-box">
 
-			<canvas id="edit-box" class="hide"></canvas>
+			<canvas id="edit-box" class=""></canvas>
 
 
 			<ul class="tool-bar">
@@ -126,11 +127,11 @@
 			<ul id="stuff">
 				<p>饰品</p>
 				<li>眼泪<input class="hide" value="1"/></li>
-				<li>太阳<input class="hide" value="2"/></li>
+				<li>耳朵<input class="hide" value="2"/></li>
 				<li>胡子<input class="hide" value="3"/></li>
-				<li>爱心<input class="hide" value="4"/></li>
-				<li>蝴蝶结<input class="hide" value="5"/></li>
-				<li>皇冠<input class="" value="6"/></li>
+				<li>弯眼<input class="hide" value="4"/></li>
+				<li>猪鼻<input class="hide" value="5"/></li>
+				<li>Hello<input class="hide" value="6"/></li>
 			</ul>
 			<ul id="border">
 				<p>边框</p>
@@ -143,7 +144,7 @@
 			</ul>
 		</div>
 
-		<img id="border-box" class="hide" src="">
+		<img id="border-box" class="" src="">
 
 		<div id="stuff-box"></div>
 
@@ -207,7 +208,7 @@ function addBorder(event) {
 	console.log(event.toElement);
 	var img_name = event.toElement.value;
 	if(img_name == "边框0") {
-  	borderObj.src = "img/border_0.png";
+  	borderBoxObj.src = "img/border_0.png";
   	return false;
 	}
 	var img_url = "img/border_" + img_name.substring(2) + ".png";
@@ -215,18 +216,67 @@ function addBorder(event) {
   borderBoxObj.src = img_url;
 }
 
+
+var drag = false;  //用来判断拖拽是否成立
 function addStuff(event) {
 	var stuffBoxObj = document.getElementById("stuff-box");
 	var new_stuff = document.createElement("img");
 	var stuff_name = event.toElement.children[0].value;
 	//有些不支持children,或者用: event.toElement.childNodes[1].value);
 	var img_url = "img/stuff_" + stuff_name + ".png";
-	var z_index = 1;
-	
+
+	var obX; 
+	var obY;  	//物体原来的位置
+	var mouseX;
+	var mouseY; //鼠标原来的位置
+
 	new_stuff.src = img_url;
-	new_stuff.style.zIndex = z_index++;
-	console.log(new_stuff);
+	new_stuff.style.top = "150px";
+	new_stuff.style.left = "100px";
+
+	new_stuff.addEventListener("mousedown", function (event) {
+		downOnStuff(new_stuff, obX, obY, mouseX, mouseY);
+	}, false);
+
+/*	new_stuff.addEventListener("mouseup", function (event) {
+		upOnStuff(new_stuff);
+	}, false);*/
+	new_stuff.onmouseup=function () {
+		upOnStuff(new_stuff);
+	};
+
 	stuffBoxObj.appendChild(new_stuff);
+}
+
+function downOnStuff(obj, obX, obY, mouseX, mouseY) {
+	drag = true;
+	mouseX = event.x;
+	mouseY = event.y;
+	obX = parseInt(obj.style.left);
+	obY = parseInt(obj.style.top);
+	console.log(event.x);
+	console.log(obj.style.top);
+	
+	obj.addEventListener("mousemove", function (event) {
+		moveOnStuff(obj, obX, obY, mouseX, mouseY);
+	}, false);
+}
+
+function moveOnStuff(obj, obX, obY, mouseX, mouseY) {
+	console.log("drag");
+	if(drag) {
+		var x,y;
+		x = event.x - mouseX + obX;
+		y = event.y - mouseY + obY;
+		obj.style.left = x + "px";
+		obj.style.top = y + "px";		
+	}
+}
+
+function upOnStuff(obj) {
+	console.log("up");
+	drag = false;
+	obj.onmousemove = null;
 }
 
 window.onload = function() {
@@ -284,6 +334,8 @@ window.onload = function() {
   // $("#btn-edit").mouseenter(function(){
   // 	$(".edit-tool").fun
   // });
+
+
 }
 
 
