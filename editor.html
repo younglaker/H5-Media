@@ -19,7 +19,7 @@
 		height: 540px;
 		border: 1px solid #000;
 	}
-	#border-box {
+	#stuff-box, #border-box {
 		width: 720px;
 		height: 540px;
 		border: 1px solid #000;
@@ -103,7 +103,7 @@
 				<li><input type="button" value="淡化"/></li>
 				<li><input type="button" value="复古"/></li>
 			</ul>
-			<ul>
+			<ul id="stuff">
 				<p>饰品</p>
 				<li><input type="button" value="眼泪"/></li>
 				<li><input type="button" value="太阳"/></li>
@@ -124,6 +124,8 @@
 		</div>
 
 		<img id="border-box" src="">
+
+		<div class="stuff-box"></div>
 
 	</div>
 </body>
@@ -182,18 +184,17 @@ function filterChg(event) {
 
 function addBorder(event) {
 	var borderObj = document.getElementById("border-box");
-
 	var img_name = event.toElement.value;
-console.log(img_name);
 	if(img_name == "边框0") {
   	borderObj.src = "img/border_0.png";
-  	console.log("message");
   	return false;
 	}
 	var img_url = "img/border_" + img_name.substring(2) + ".png";
 	console.log(img_url);
   borderObj.src = img_url;
 }
+
+
 
 window.onload = function() {
 	/* create canvas and context objects*/
@@ -235,6 +236,15 @@ window.onload = function() {
 		console.log(border.children[i]);
 		border.children[i].addEventListener("click", function (event) {
 			addBorder(event);
+  	}, false);
+	}
+
+	var stuff = document.getElementById("stuff");
+
+	for(var i = 1; i < stuff.children.length; i++) {
+		console.log(stuff.children[i]);
+		stuff.children[i].addEventListener("click", function (event) {
+			addStuff(event);
   	}, false);
 	}
 
