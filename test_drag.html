@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link type="text/css" rel="stylesheet" href="css/cssreset.css" />
+<link type="text/css" rel="stylesheet" href="css/style.css" />
+</head>
+
+<style type="text/css">
+/*	img { 
+		-webkit-filter: grayscale(0%) blur(1px) invert(10%) opacity(50%) saturate(3%) sepia(100%) ;
+	}*/
+	.hide {
+		visibility: hidden;
+	}
+	#container {
+		position: relative;
+	}
+	#edit-box {
+		width: 720px;
+		height: 540px;
+		border: 1px solid #000;
+	}
+	#stuff-box, #border-box {
+		width: 720px;
+		height: 540px;
+		border: 1px solid #000;
+		position: absolute;
+		top: 0px;
+	}
+	#stuff-box img {
+		position: absolute;
+	}
+	.tool-bar {
+		width: 720px;
+		height: 40px;
+		border: 1px solid #000;
+	}
+	.tool-bar li {
+		width: 100px;
+		height: 30px;
+		float: left;
+		margin-right: 20px;
+		background: #828D92;
+		text-align: center;
+		line-height: 30px;
+		cursor: pointer;
+	}
+	.edit-tool {
+		width: 720px;
+		height: 100px;
+		position: absolute;
+		bottom: 45px;
+		background: #00E1FF;
+		display: none;
+	}
+	.edit-tool p {
+		margin-bottom: 5px;
+	}
+	.edit-tool ul {
+		width: 230px;
+		height: 100px;
+		float: left;
+	}
+	.edit-tool ul li {
+		float: left;
+		margin-right: 10px;
+		margin-bottom: 5px;
+	}
+	#filter li, #border li, #stuff li {
+		width: 60px;
+		height: 30px;
+		background: #fff;
+		line-height: 30px;
+		cursor: pointer;
+		text-align: center;
+		border-radius: 3px;
+		box-shadow: 1px 1px 1px 1px #C5C5C5;
+	}
+	.edit-tool ul li input[type=button] {
+		cursor: pointer;
+	}
+	#show-img {
+		width: 720px;
+		height: 540px;
+	}
+	#merge-pic {
+		width: 720px;
+		height: 540px;
+		border: 1px solid #f00;
+	}
+	.grayscale {
+	  -webkit-filter: grayscale(1);
+	}
+	.brightness {
+	  -webkit-filter: brightness(140%);
+	}
+	.blur {
+	  -webkit-filter: blur(3px);
+	}
+	.invert {
+	  -webkit-filter: invert(100%)
+	}
+	.opacity {
+	  -webkit-filter: opacity(50%)
+	}
+	.sepia {
+	  -webkit-filter: sepia(1);
+	}
+
+</style>
+
+<body>
+	<div id="container">
+
+		<div class="pict-box">
+
+			<canvas id="edit-box"></canvas>
+
+			<ul class="tool-bar">
+				<li id="btn-edit">编辑工具</li>
+				<li id="btn-reset">恢复原图</li>
+				<li id="btn-export">导出</li>
+			</ul>
+
+			<img id="border-box" src="">
+
+			<div id="stuff-box"></div>
+
+		</div>
+
+		<div class="edit-tool">
+			<ul id="filter" class="filter">
+				<p>滤镜</p>
+				<li>黑白<input class="hide"value="1"/></li>
+				<li>加亮<input class="hide"value="2"/></li>
+				<li>模糊<input class="hide"value="3"/></li>
+				<li>反色<input class="hide"value="4"/></li>
+				<li>淡化<input class="hide"value="5"/></li>
+				<li>复古<input class="hide"value="6"/></li>
+			</ul>
+			<ul id="stuff">
+				<p>饰品</p>
+				<li>眼泪<input class="hide" value="1"/></li>
+				<li>耳朵<input class="hide" value="2"/></li>
+				<li>胡子<input class="hide" value="3"/></li>
+				<li>弯眼<input class="hide" value="4"/></li>
+				<li>猪鼻<input class="hide" value="5"/></li>
+				<li>Hello<input class="hide" value="6"/></li>
+			</ul>
+			<ul id="border">
+				<p>边框</p>
+				<li>边框1<input class="hide" value="1"/></li>
+				<li>边框2<input class="hide" value="2"/></li>
+				<li>边框3<input class="hide" value="3"/></li>
+				<li>边框4<input class="hide" value="4"/></li>
+				<li>边框5<input class="hide" value="5"/></li>
+				<li>无<input class="hide" value="0"/></li>
+			</ul>
+		</div>
+
+	</div>
+
+	<div id="show-img"></div>
+
+	<canvas id="merge-pic"></canvas>
+
+	<img id="test" src="img/stuff_1.png">
+
+</body>
+<script type="text/javascript" src="js/base64.js"></script>
+<script type="text/javascript" src="js/canvas2image.js"></script>
+<script type="text/javascript">
+
+window.onload = function() {
+	/* create canvas and context objects*/
+	canvas = document.getElementById("edit-box");
+	ctx = canvas.getContext("2d");
+
+	/* load source image*/
+
+	var imgObj = new Image();
+
+	imgObj.onload = function() {
+		ctx.drawImage(this, 0, 0, this.width, this.height, 0, 0, canvas.width, canvas.height);
+	}
+
+  imgObj.src = "img/aaaa.jpg";
+
+
+}
+
+
+</script>
+</html>
