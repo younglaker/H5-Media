@@ -16,6 +16,8 @@
 	}
 	#container {
 		position: relative;
+		margin-top: 100px;
+		margin-left: 100px;
 	}
 	#edit-box {
 		width: 720px;
@@ -108,7 +110,13 @@
 	.sepia {
 	  -webkit-filter: sepia(1);
 	}
-
+/*  */
+	#drag {
+		top: 100px;
+		left: 100px;
+		border: 1px solid #fff;
+	}
+/*  */
 </style>
 
 <body>
@@ -126,7 +134,7 @@
 
 			<img id="border-box" src="">
 
-			<div id="stuff-box"></div>
+			<div id="stuff-box"><img id="drag" src="img/stuff_4.png"></div>
 
 		</div>
 
@@ -173,6 +181,36 @@
 <script type="text/javascript" src="js/canvas2image.js"></script>
 <script type="text/javascript">
 
+function getStyleValue(obj, property) {
+	var pro_val = 0;
+
+	if(obj.currentStyle) {
+		switch(property) {
+			case "left":
+				pro_val = obj.currentStyle.left;
+				break;
+			case "top":
+				pro_val = obj.currentStyle.top;
+				break;
+		}
+
+	} else if(window.getComputedStyle) {
+		switch(property) {
+			case "left":
+				pro_val = window.getComputedStyle(obj, null).left;
+				break;
+			case "top":
+				pro_val = window.getComputedStyle(obj, null).top;
+				break;
+		}
+	}
+
+	return pro_val;
+}
+
+
+
+
 window.onload = function() {
 	/* create canvas and context objects*/
 	canvas = document.getElementById("edit-box");
@@ -188,6 +226,60 @@ window.onload = function() {
 
   imgObj.src = "img/aaaa.jpg";
 
+	var is_drag = false;
+	var old_mouse_x = 100;
+	var old_mouse_y = 100;
+	var old_obj_x;
+	var old_obj_y;
+
+
+
+  var drag = document.getElementById("drag");
+  var ele = document.getElementById("drag");
+
+  drag.onmousedown = function() {
+		is_drag = true;
+		var e = window.event || event;
+  	// var ele = e.target;
+
+  	// old_mouse_x = parseInt(e.layerX);
+  	// old_mouse_y = parseInt(e.layerY);
+
+  	document.onmouseup = mouseUp;
+
+  	document.onmousemove = mouseMove;
+  }
+
+	 // drag.onmouseup = mouseUp;
+	 // drag.onmousemove = mouseMove;
+
+	function mouseUp() {
+	  document.onmousemove = null;
+	  console.log("up++");
+	}
+
+	function mouseMove() {
+		var e = window.event || event;
+  	old_obj_x = getStyleValue(drag, "left");
+  	old_obj_y = getStyleValue(drag, "top");/*
+  	old_obj_x = getStyleValue(e.target, "left");
+  	old_obj_y = getStyleValue(e.target, "top");*/
+  	old_obj_x = parseInt(old_obj_x);
+  	old_obj_y = parseInt(old_obj_y);
+		var new_mouse_x = parseInt(e.layerX);
+		var new_mouse_y = parseInt(e.layerY);
+		console.log("moving");
+		var new_obj_x = new_mouse_x - old_mouse_x + old_obj_x;
+		var new_obj_y = new_mouse_y - old_mouse_y + old_obj_y;
+		console.log("1new_mouse_x=" + new_mouse_x);
+		console.log("2old_mouse_x=" + old_mouse_x);
+		console.log("3old_obj_x=" + old_obj_x);
+		console.log("new_obj_x=" + new_obj_x);
+		ele.style.left = new_obj_x + "px";
+		ele.style.top = new_obj_y + "px";
+  	old_mouse_x = new_obj_x;
+  	old_mouse_y = new_obj_y;
+	}
 
 }
 
