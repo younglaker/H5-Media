@@ -230,16 +230,20 @@ window.onload = function() {
 
   imgObj.src = "img/aaaa.jpg";
 
-
-  var drag = document.getElementById("drag");
 	var old_mouse_x = 0;
 	var old_mouse_y = 0;
 	var old_obj_x;
 	var old_obj_y;
 
+  var drag = document.getElementById("drag");
+
   drag.onmousedown = function() {
 
 		var e = window.event || event;
+  	// var ele = e.target;
+
+  	offset_x = e.clientX - drag.offsetLeft;
+  	offset_y = e.clientY - drag.offsetTop;
 
 		old_mouse_x = parseInt(e.clientX);
   	old_mouse_y = parseInt(e.clientY);
@@ -258,28 +262,19 @@ window.onload = function() {
 
 	function mouseUp() {
 	  drag.onmousemove = null;
+	  drag.onmouseup = null;
 	}
 
 	function mouseMove() {
 		var e = window.event || event;
-		var new_mouse_x, new_mouse_y, new_obj_x, new_obj_y;
+		var new_mouse_x = parseInt(e.clientX);
+		var new_mouse_y = parseInt(e.clientY);
 
-  	old_obj_x = getStyleValue(drag, "left");
-  	old_obj_y = getStyleValue(drag, "top");
-  	old_obj_x = parseInt(old_obj_x);
-  	old_obj_y = parseInt(old_obj_y);
-
-		new_mouse_x = parseInt(e.clientX);
-		new_mouse_y = parseInt(e.clientY);
-
-		new_obj_x = new_mouse_x - old_mouse_x + old_obj_x;
-		new_obj_y = new_mouse_y - old_mouse_y + old_obj_y;
+		var new_obj_x = e.clientX - offset_x;
+		var new_obj_y = e.clientY - offset_y;
 
 		drag.style.left = new_obj_x + "px";
 		drag.style.top = new_obj_y + "px";
-
-  	old_mouse_x = new_mouse_x;
-  	old_mouse_y = new_mouse_y;
 	}
 
 
