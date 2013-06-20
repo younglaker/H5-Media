@@ -24,6 +24,9 @@
 		height: 540px;
 		border: 1px solid #000;
 	}
+	.pict-box {
+		position: relative;
+	}
 	#stuff-box, #border-box {
 		width: 720px;
 		height: 540px;
@@ -112,9 +115,12 @@
 	}
 /*  */
 	#drag {
+		width: 153px;
+		height: 90px;
+		position: absolute;
 		top: 100px;
 		left: 100px;
-		border: 1px solid #fff;
+		border: 2px solid #fff;
 	}
 /*  */
 </style>
@@ -134,7 +140,7 @@
 
 			<img id="border-box" src="">
 
-			<div id="stuff-box"><img id="drag" src="img/stuff_4.png"></div>
+			<div id="stuff-box"><div id="drag"><img src="img/stuff_4.png"></div></div>
 
 		</div>
 
@@ -177,8 +183,6 @@
 	<img id="test" src="img/stuff_1.png">
 
 </body>
-<script type="text/javascript" src="js/base64.js"></script>
-<script type="text/javascript" src="js/canvas2image.js"></script>
 <script type="text/javascript">
 
 function getStyleValue(obj, property) {
@@ -208,6 +212,15 @@ function getStyleValue(obj, property) {
 	return pro_val;
 }
 
+function stopPropagation(e) {
+  e = window.e || e;
+  if(document.all) {
+  	e.cancelBubble = true;
+  }
+  else {
+  	e.stopPropagation();
+  }
+}
 
 
 
@@ -227,59 +240,88 @@ window.onload = function() {
   imgObj.src = "img/aaaa.jpg";
 
 	var is_drag = false;
-	var old_mouse_x = 100;
-	var old_mouse_y = 100;
+	var old_mouse_x = 0;
+	var old_mouse_y = 0;
 	var old_obj_x;
 	var old_obj_y;
 
 
 
   var drag = document.getElementById("drag");
-  var ele = document.getElementById("drag");
+  // var ele = document.getElementById("drag");
 
-  drag.onmousedown = function() {
-		is_drag = true;
-		var e = window.event || event;
+  drag.onmousedown = function(ev) {
+		// is_drag = true;
+		var e = ev || event;
   	// var ele = e.target;
 
-  	// old_mouse_x = parseInt(e.layerX);
-  	// old_mouse_y = parseInt(e.layerY);
 
-  	document.onmouseup = mouseUp;
+  	// offset_x = e.clientX - drag.offsetLeft;
+  	// offset_y = e.clientY - drag.offsetTop;
 
-  	document.onmousemove = mouseMove;
+		old_mouse_x = parseInt(e.clientX);
+  	old_mouse_y = parseInt(e.clientY);
+  	
+  	document.onmouseup = function() {
+  		// is_drag = false;
+  	  mouseUp();
+  	  // e.stopPropagation();
+  	}
+
+  	document.onmousemove = function(ev) {
+  	  mouseMove(ev);
+  	  // e.stopPropagation();
+  	}
+
+  	// e.stopPropagation();
+
+  	// 就少了这个  return false
+  	return false;
   }
 
 	 // drag.onmouseup = mouseUp;
 	 // drag.onmousemove = mouseMove;
 
 	function mouseUp() {
+		// var e = window.event || event;
 	  document.onmousemove = null;
-	  console.log("up++");
+	  document.onmouseup = null;
+	  // console.log("up++");
+	  // e.stopPropagation();
 	}
 
-	function mouseMove() {
-		var e = window.event || event;
+	function mouseMove(ev) {
+		var e = ev || event;
+
+
+
   	old_obj_x = getStyleValue(drag, "left");
   	old_obj_y = getStyleValue(drag, "top");/*
   	old_obj_x = getStyleValue(e.target, "left");
   	old_obj_y = getStyleValue(e.target, "top");*/
   	old_obj_x = parseInt(old_obj_x);
   	old_obj_y = parseInt(old_obj_y);
-		var new_mouse_x = parseInt(e.layerX);
-		var new_mouse_y = parseInt(e.layerY);
+		var new_mouse_x = parseInt(e.clientX);
+		var new_mouse_y = parseInt(e.clientY);
 		console.log("moving");
 		var new_obj_x = new_mouse_x - old_mouse_x + old_obj_x;
 		var new_obj_y = new_mouse_y - old_mouse_y + old_obj_y;
+
+		// var new_obj_x = e.clientX - offset_x;
+		// var new_obj_y = e.clientY - offset_y;
+
 		console.log("1new_mouse_x=" + new_mouse_x);
+		// console.log("event.x=" + event.x);
 		console.log("2old_mouse_x=" + old_mouse_x);
 		console.log("3old_obj_x=" + old_obj_x);
-		console.log("new_obj_x=" + new_obj_x);
-		ele.style.left = new_obj_x + "px";
-		ele.style.top = new_obj_y + "px";
-  	old_mouse_x = new_obj_x;
-  	old_mouse_y = new_obj_y;
+		console.log("4new_obj_x=" + new_obj_x);
+		drag.style.left = new_obj_x + "px";
+		drag.style.top = new_obj_y + "px";
+  	old_mouse_x = new_mouse_x;
+  	old_mouse_y = new_mouse_y;
+  	// e.stopPropagation();
 	}
+
 
 }
 
