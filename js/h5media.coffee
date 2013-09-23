@@ -2,15 +2,17 @@ window.h5media = (selector) ->
 	return new mediaObj(selector)
 
 mediaObj = (selector) ->
-	this.selector = document.querySelector(selector)
+	this.selector = selector
+	this.stream = null
 	return this
 
 mediaObj.prototype =
+
 	hasGetUserMedia: () ->
 		return navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigatoroGetUserMedia || navigator.msieGetUserMedia || false
 
 	openVideo: () ->
-		selector = this.selector
+		th = this
 		if this.hasGetUserMedia(this.selector)
 			navigator.getUserMedia = this.hasGetUserMedia(this.selector)
 			navigator.getUserMedia(
@@ -19,7 +21,9 @@ mediaObj.prototype =
 
 				# successCallback
 				(mediaStream) ->
-					selector.src = window.URL.createObjectURL(mediaStream)
+					th.selector.src = window.URL.createObjectURL(mediaStream)
+					th.stream = mediaStream
+					return th
 
 				# errorCallback
 				(error) ->
@@ -30,5 +34,7 @@ mediaObj.prototype =
 		
 		return true
 
-	pauseVideo: (container) ->
-		container.pause();
+	pauseVideo: () ->
+		console.log this
+		this.selector.pause();
+		this.stream.stop();

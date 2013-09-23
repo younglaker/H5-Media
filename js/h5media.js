@@ -7,7 +7,8 @@
   };
 
   mediaObj = function(selector) {
-    this.selector = document.querySelector(selector);
+    this.selector = selector;
+    this.stream = null;
     return this;
   };
 
@@ -16,14 +17,16 @@
       return navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigatoroGetUserMedia || navigator.msieGetUserMedia || false;
     },
     openVideo: function() {
-      var selector;
-      selector = this.selector;
+      var th;
+      th = this;
       if (this.hasGetUserMedia(this.selector)) {
         navigator.getUserMedia = this.hasGetUserMedia(this.selector);
         navigator.getUserMedia({
           video: true
         }, function(mediaStream) {
-          return selector.src = window.URL.createObjectURL(mediaStream);
+          th.selector.src = window.URL.createObjectURL(mediaStream);
+          th.stream = mediaStream;
+          return th;
         }, function(error) {
           return error;
         });
@@ -32,8 +35,10 @@
       }
       return true;
     },
-    pauseVideo: function(container) {
-      return container.pause();
+    pauseVideo: function() {
+      console.log(this);
+      this.selector.pause();
+      return this.stream.stop();
     }
   };
 

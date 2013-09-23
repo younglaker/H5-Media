@@ -21,8 +21,14 @@
 </body>
 <script type="text/javascript" src="js/h5media.js"></script>
 <script type="text/javascript">
-	// var video = document.querySelector("#camera-area");
-	h5media("#camera-area").openVideo();
+	var video = document.querySelector("#camera-area");
+	var obj = new h5media(video);
+	obj.openVideo();
+
+	pause = document.querySelector("#btn-pause");
+	pause.addEventListener("click", function(){
+		obj.pauseVideo();
+	}, false);
 </script>
 
 </html>
