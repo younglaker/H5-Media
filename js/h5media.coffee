@@ -21,7 +21,7 @@ mediaObj.prototype =
 
 				# successCallback
 				(mediaStream) ->
-					th.selector.src = window.URL.createObjectURL(mediaStream)
+					th.selector.src = (window.URL || window.webkitURL).createObjectURL(mediaStream)
 					th.stream = mediaStream
 					return th
 
@@ -35,6 +35,12 @@ mediaObj.prototype =
 		return true
 
 	pauseVideo: () ->
-		console.log this
 		this.selector.pause();
 		this.stream.stop();
+
+	resumeVideo: () ->
+		this.openVideo()
+
+	closeVideo: () ->
+		this.pauseVideo()
+		this.selector.src = ""

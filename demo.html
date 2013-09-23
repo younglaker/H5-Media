@@ -16,6 +16,7 @@
 		<button id="btn-open">open</button>
 		<button id="btn-photo">Photo</button>
 		<button id="btn-pause">pause</button>
+		<button id="btn-resume">resume</button>
 		<button id="btn-close">close</button>
 	</div>
 </body>
@@ -28,6 +29,16 @@
 	pause = document.querySelector("#btn-pause");
 	pause.addEventListener("click", function(){
 		obj.pauseVideo();
+	}, false);
+
+	resume = document.querySelector("#btn-resume");
+	resume.addEventListener("click", function(){
+		obj.resumeVideo();
+	}, false);
+	
+	close = document.querySelector("#btn-close");
+	close.addEventListener("click", function(){
+		obj.closeVideo();
 	}, false);
 </script>
 

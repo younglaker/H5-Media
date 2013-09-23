@@ -24,7 +24,7 @@
         navigator.getUserMedia({
           video: true
         }, function(mediaStream) {
-          th.selector.src = window.URL.createObjectURL(mediaStream);
+          th.selector.src = (window.URL || window.webkitURL).createObjectURL(mediaStream);
           th.stream = mediaStream;
           return th;
         }, function(error) {
@@ -36,9 +36,15 @@
       return true;
     },
     pauseVideo: function() {
-      console.log(this);
       this.selector.pause();
       return this.stream.stop();
+    },
+    resumeVideo: function() {
+      return this.openVideo();
+    },
+    closeVideo: function() {
+      this.pauseVideo();
+      return this.selector.src = "";
     }
   };
 
