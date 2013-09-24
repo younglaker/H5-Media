@@ -44,3 +44,12 @@ mediaObj.prototype =
 	closeVideo: () ->
 		this.pauseVideo()
 		this.selector.src = ""
+
+	shotTo: (img) ->
+		console.dir this.selector
+		canvas = document.querySelector("#screenshot-canvas")
+		ctx = canvas.getContext('2d')
+		canvas.width = this.selector.width
+		canvas.height = this.selector.height
+		ctx.drawImage(this.selector, 0, 0, this.selector.width, this.selector.height)
+		img.src = canvas.toDataURL()

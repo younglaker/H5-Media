@@ -45,6 +45,16 @@
     closeVideo: function() {
       this.pauseVideo();
       return this.selector.src = "";
+    },
+    shotTo: function(img) {
+      var canvas, ctx;
+      console.dir(this.selector);
+      canvas = document.querySelector("#screenshot-canvas");
+      ctx = canvas.getContext('2d');
+      canvas.width = this.selector.width;
+      canvas.height = this.selector.height;
+      ctx.drawImage(this.selector, 0, 0, this.selector.width, this.selector.height);
+      return img.src = canvas.toDataURL();
     }
   };
 

@@ -4,20 +4,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title></title>
 <style type="text/css">
-	#camera-area {
+	#camera-area, #screenshot {
+		width: 400px;
+		height: 300px;
 		border: 1px solid #000;
 	}
 </style>
 </head>
 
 <body>
-	<video id="camera-area" autoplay width="400px" height="300px"></video>
+	<video id="camera-area" autoplay ></video>
+	<img id="screenshot" src="">
+	<canvas style="display:none;" id="screenshot-canvas"></canvas>
 	<div>
 		<button id="btn-open">open</button>
-		<button id="btn-photo">Photo</button>
 		<button id="btn-pause">pause</button>
 		<button id="btn-resume">resume</button>
 		<button id="btn-close">close</button>
+		<button id="btn-shot">shot</button>
 	</div>
 </body>
 <script type="text/javascript" src="js/h5media.js"></script>
@@ -39,6 +43,12 @@
 	close = document.querySelector("#btn-close");
 	close.addEventListener("click", function(){
 		obj.closeVideo();
+	}, false);
+
+	shot = document.querySelector("#btn-shot");
+	screenshot = document.querySelector("#screenshot");
+	shot.addEventListener("click", function(){
+		obj.shotTo(screenshot);
 	}, false);
 </script>
 
