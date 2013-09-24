@@ -1,9 +1,14 @@
-window.h5media = (selector) ->
+window.H5media = (selector) ->
 	return new mediaObj(selector)
 
 mediaObj = (selector) ->
 	this.selector = selector
 	this.stream = null
+	this.selector.addEvent = (ev_type, fn, bool) ->
+		th = this
+		console.log th
+		addEvent = if document.addEventListener then th.addEventListener(ev_type, fn, bool) else th.attachEvent("on" + ev_type, fn)
+		return this	
 	return this
 
 mediaObj.prototype =
@@ -53,3 +58,10 @@ mediaObj.prototype =
 		canvas.height = this.selector.height
 		ctx.drawImage(this.selector, 0, 0, this.selector.width, this.selector.height)
 		img.src = canvas.toDataURL()
+
+	speach: () ->
+		console.log this
+		this.selector.addEvent("webkitspeechchange", fn = (event) ->
+			result = event.result[0].utterance
+			console.log result
+		)

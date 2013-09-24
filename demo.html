@@ -9,6 +9,12 @@
 		height: 300px;
 		border: 1px solid #000;
 	}
+	#speach {
+		width: 30px;
+		height: 30px;
+		border: 0;
+		background: url(img/siri.png) no-repeat;
+	}
 </style>
 </head>
 
@@ -23,33 +29,40 @@
 		<button id="btn-close">close</button>
 		<button id="btn-shot">shot</button>
 	</div>
+	<p>
+		<a href="javascript:void();"><input id="speach" x-webkit-speech value="" /></a>
+	</p>
 </body>
 <script type="text/javascript" src="js/h5media.js"></script>
 <script type="text/javascript">
 	var video = document.querySelector("#camera-area");
-	var obj = new h5media(video);
+	var obj = new H5media(video);
 	obj.openVideo();
 
-	pause = document.querySelector("#btn-pause");
+	var pause = document.querySelector("#btn-pause");
 	pause.addEventListener("click", function(){
 		obj.pauseVideo();
 	}, false);
 
-	resume = document.querySelector("#btn-resume");
+	var resume = document.querySelector("#btn-resume");
 	resume.addEventListener("click", function(){
 		obj.resumeVideo();
 	}, false);
 	
-	close = document.querySelector("#btn-close");
+	var close = document.querySelector("#btn-close");
 	close.addEventListener("click", function(){
 		obj.closeVideo();
 	}, false);
 
-	shot = document.querySelector("#btn-shot");
+	var shot = document.querySelector("#btn-shot");
 	screenshot = document.querySelector("#screenshot");
 	shot.addEventListener("click", function(){
 		obj.shotTo(screenshot);
 	}, false);
+
+	var speach = document.querySelector("#speach");
+	var sp = new H5media(speach);
+	sp.speach();
 </script>
 
 </html>
