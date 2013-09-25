@@ -30,7 +30,7 @@
 		<button id="btn-shot">shot</button>
 	</div>
 	<p>
-		<a href="javascript:void();"><input id="speach" x-webkit-speech value="" /></a>
+		<a href="javascript:void();"><input id="speach" x-webkit-speech onwebkitspeechchange="returnSpeach(event)" value="" /></a>
 	</p>
 </body>
 <script type="text/javascript" src="js/h5media.js"></script>
@@ -55,14 +55,21 @@
 	}, false);
 
 	var shot = document.querySelector("#btn-shot");
-	screenshot = document.querySelector("#screenshot");
+	var screenshot = document.querySelector("#screenshot");
 	shot.addEventListener("click", function(){
 		obj.shotTo(screenshot);
 	}, false);
 
-	var speach = document.querySelector("#speach");
+/*	var speach = document.querySelector("#speach");
 	var sp = new H5media(speach);
 	sp.speach();
+	console.log(sp.currSpeach);*/
+
+	function returnSpeach(event){
+		console.log(event);
+		console.log(event.results[0].utterance);
+		
+	}
 </script>
 
 </html>

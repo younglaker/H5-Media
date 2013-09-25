@@ -9,11 +9,10 @@
   mediaObj = function(selector) {
     this.selector = selector;
     this.stream = null;
+    this.currSpeach = null;
     this.selector.addEvent = function(ev_type, fn, bool) {
-      var addEvent, th;
-      th = this;
-      console.log(th);
-      addEvent = document.addEventListener ? th.addEventListener(ev_type, fn, bool) : th.attachEvent("on" + ev_type, fn);
+      var addEvent;
+      addEvent = document.addEventListener ? this.addEventListener(ev_type, fn, bool) : this.attachEvent("on" + ev_type, fn);
       return this;
     };
     return this;
@@ -64,12 +63,8 @@
       return img.src = canvas.toDataURL();
     },
     speach: function() {
-      var fn;
-      console.log(this);
-      return this.selector.addEvent("webkitspeechchange", fn = function(event) {
-        var result;
-        result = event.result[0].utterance;
-        return console.log(result);
+      return this.selector.addEvent("webkitspeechchange", function(event) {
+        return this.currSpeach = event.results[0].utterance;
       });
     }
   };

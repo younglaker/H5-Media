@@ -4,11 +4,10 @@ window.H5media = (selector) ->
 mediaObj = (selector) ->
 	this.selector = selector
 	this.stream = null
+	this.currSpeach = null
 	this.selector.addEvent = (ev_type, fn, bool) ->
-		th = this
-		console.log th
-		addEvent = if document.addEventListener then th.addEventListener(ev_type, fn, bool) else th.attachEvent("on" + ev_type, fn)
-		return this	
+		addEvent = if document.addEventListener then this.addEventListener(ev_type, fn, bool) else this.attachEvent("on" + ev_type, fn)
+		return this
 	return this
 
 mediaObj.prototype =
@@ -60,8 +59,8 @@ mediaObj.prototype =
 		img.src = canvas.toDataURL()
 
 	speach: () ->
-		console.log this
-		this.selector.addEvent("webkitspeechchange", fn = (event) ->
-			result = event.result[0].utterance
-			console.log result
+		this.selector.addEvent("webkitspeechchange", (event) ->
+			this.currSpeach = event.results[0].utterance
 		)
+
+
