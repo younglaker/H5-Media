@@ -24,21 +24,39 @@ A html5 video plugin, no dependencies. Can open the camera through broswer and t
 
 - openVideo()
 
+	var open = document.querySelector("#btn-open");
+	open.addEventListener("click", function(){
 		obj.openVideo();
+	}, false);
+
+-pauseVideo()
+
+	var pause = document.querySelector("#btn-pause");
+	pause.addEventListener("click", function(){
+		obj.pauseVideo();
+	}, false);
 
 - resumeVideo()
 
+	var resume = document.querySelector("#btn-resume");
+	resume.addEventListener("click", function(){
 		obj.resumeVideo();
+	}, false);
 
 - closeVideo()
 
+	var close = document.querySelector("#btn-close");
+	close.addEventListener("click", function(){
 		obj.closeVideo();
+	}, false);
 
 - shotTo(DOMElement);
 
-		var shot = document.querySelector("#btn-shot");
-		screenshot = document.querySelector("#screenshot");
+	var shot = document.querySelector("#btn-shot");
+	var screenshot = document.querySelector("#screenshot");
+	shot.addEventListener("click", function(){
 		obj.shotTo(screenshot);
+	}, false);
 
 ## Changelog:
 
